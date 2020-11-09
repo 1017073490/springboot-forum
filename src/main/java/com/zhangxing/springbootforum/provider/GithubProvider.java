@@ -44,7 +44,9 @@ public class GithubProvider {
     public GithubUserDTO getGithubUser(String accessToken) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
+                //url为GitHub的API网址
                 .url("https://api.github.com/user")
+                //新版的使用
                 .header("Authorization", "token "+accessToken)
                 .build();
         try {

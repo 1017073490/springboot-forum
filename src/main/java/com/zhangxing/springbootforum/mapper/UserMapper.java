@@ -3,6 +3,8 @@ package com.zhangxing.springbootforum.mapper;
 import com.zhangxing.springbootforum.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @author zhangxing
@@ -16,5 +18,6 @@ public interface UserMapper {
             " VALUES (#{LOGIN_ID},#{TOKEN},#{CREATE_DATE},#{MODIFIED_DATE})")
     void insert(User user);
 
-
+    @Select("SELECT * FROM GITHUB_USER WHERE TOKEN=#{TOKEN}")
+    User findByToken(@Param("TOKEN") String cookieValue);
 }

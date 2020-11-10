@@ -14,8 +14,8 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface UserMapper {
 
-    @Insert("INSERT INTO GITHUB_USER (LOGIN_ID,TOKEN,CREATE_DATE,MODIFIED_DATE)" +
-            " VALUES (#{LOGIN_ID},#{TOKEN},#{CREATE_DATE},#{MODIFIED_DATE})")
+    @Insert("INSERT INTO GITHUB_USER (LOGIN_ID,TOKEN,CREATE_DATE,MODIFIED_DATE,ACCOUNT_ID,BIO)" +
+            " VALUES (#{LOGIN_ID},#{TOKEN},#{CREATE_DATE},#{MODIFIED_DATE},#{ACCOUNT_ID},#{BIO})")
     void insert(User user);
 
     @Select("SELECT * FROM GITHUB_USER WHERE TOKEN=#{TOKEN}")

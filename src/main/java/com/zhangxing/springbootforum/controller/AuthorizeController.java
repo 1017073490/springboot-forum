@@ -59,6 +59,8 @@ public class AuthorizeController {
             String token = UUID.randomUUID().toString();
             user.setTOKEN(token);
             user.setLOGIN_ID(githubUserDTO.getLogin());
+            user.setACCOUNT_ID(githubUserDTO.getId());
+            user.setBIO(githubUserDTO.getBio());
             user.setCREATE_DATE(System.currentTimeMillis());
             user.setMODIFIED_DATE(user.getCREATE_DATE());
             //将所有的信息存入数据库，为持久化提供数据支撑

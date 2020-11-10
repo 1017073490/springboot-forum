@@ -11,6 +11,24 @@ public class User {
     private String TOKEN;
     private Long CREATE_DATE;
     private Long MODIFIED_DATE;
+    private String ACCOUNT_ID;
+    private String BIO;
+
+    public String getACCOUNT_ID() {
+        return ACCOUNT_ID;
+    }
+
+    public void setACCOUNT_ID(String ACCOUNT_ID) {
+        this.ACCOUNT_ID = ACCOUNT_ID;
+    }
+
+    public String getBIO() {
+        return BIO;
+    }
+
+    public void setBIO(String BIO) {
+        this.BIO = BIO;
+    }
 
     public Integer getID() {
         return ID;

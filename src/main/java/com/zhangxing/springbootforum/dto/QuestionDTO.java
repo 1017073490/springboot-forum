@@ -1,14 +1,15 @@
-package com.zhangxing.springbootforum.model;
+package com.zhangxing.springbootforum.dto;
 
+import com.zhangxing.springbootforum.model.User;
 import lombok.Data;
 
 /**
  * @author zhangxing
  * @Description:
- * @date 2020/11/10 10:32
+ * @date 2020/11/11 9:55
  */
 @Data
-public class Question {
+public class QuestionDTO {
     private Integer ID;
     private String TITLE;
     private String DESCRIPTION;
@@ -19,4 +20,5 @@ public class Question {
     private Integer VIEW_COUNT;
     private Integer LIKE_COUNT;
     private String TAGS;
+    private User user;
 }

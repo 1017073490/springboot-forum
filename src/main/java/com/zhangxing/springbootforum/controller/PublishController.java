@@ -44,29 +44,31 @@ public class PublishController {
         model.addAttribute("descriptionInput", descriptionInput);
         model.addAttribute("tagInput", tagInput);
         if (titleInput == null || titleInput.equals("")) {
-            model.addAttribute("userError","标题不能为空");
+            model.addAttribute("userError", "标题不能为空");
             return "publish";
         }
         if (descriptionInput == null || descriptionInput.equals("")) {
-            model.addAttribute("userError","问题补充不能为空");
+            model.addAttribute("userError", "问题补充不能为空");
             return "publish";
         }
         if (tagInput == null || tagInput.equals("")) {
-            model.addAttribute("userError","标签不能为空");
+            model.addAttribute("userError", "标签不能为空");
             return "publish";
         }
         User user = null;
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            //在获取到定义的名为"token"的cookie时，去数据库中查找这个user对象，
-            // index中也可以在有user时渲染出效果
-            if (cookie.getName().equals("token")) {
-                String cookieValue = cookie.getValue();
-                user = userMapper.findByToken(cookieValue);
-                if (user != null) {
-                    request.getSession().setAttribute("user", user);
+        if (cookies != null && cookies.length != 0) {
+            for (Cookie cookie : cookies) {
+                //在获取到定义的名为"token"的cookie时，去数据库中查找这个user对象，
+                // index中也可以在有user时渲染出效果
+                if (cookie.getName().equals("token")) {
+                    String cookieValue = cookie.getValue();
+                    user= userMapper.findByToken(cookieValue);
+                    if (user != null) {
+                        request.getSession().setAttribute("user", user);
+                    }
+                    break;
                 }
-                break;
             }
         }
         if (user == null) {

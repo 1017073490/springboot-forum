@@ -1,10 +1,14 @@
 package com.zhangxing.springbootforum.model;
 
+import lombok.Data;
+
 /**
  * @author zhangxing
  * @Description:
  * @date 2020/11/9 19:17
  */
+
+@Data
 public class User {
     private Integer ID;
     private String LOGIN_ID;
@@ -13,60 +17,5 @@ public class User {
     private Long MODIFIED_DATE;
     private String ACCOUNT_ID;
     private String BIO;
-
-    public String getACCOUNT_ID() {
-        return ACCOUNT_ID;
-    }
-
-    public void setACCOUNT_ID(String ACCOUNT_ID) {
-        this.ACCOUNT_ID = ACCOUNT_ID;
-    }
-
-    public String getBIO() {
-        return BIO;
-    }
-
-    public void setBIO(String BIO) {
-        this.BIO = BIO;
-    }
-
-    public Integer getID() {
-        return ID;
-    }
-
-    public void setID(Integer ID) {
-        this.ID = ID;
-    }
-
-    public String getLOGIN_ID() {
-        return LOGIN_ID;
-    }
-
-    public void setLOGIN_ID(String LOGIN_ID) {
-        this.LOGIN_ID = LOGIN_ID;
-    }
-
-    public String getTOKEN() {
-        return TOKEN;
-    }
-
-    public void setTOKEN(String TOKEN) {
-        this.TOKEN = TOKEN;
-    }
-
-    public Long getCREATE_DATE() {
-        return CREATE_DATE;
-    }
-
-    public void setCREATE_DATE(Long CREATE_DATE) {
-        this.CREATE_DATE = CREATE_DATE;
-    }
-
-    public Long getMODIFIED_DATE() {
-        return MODIFIED_DATE;
-    }
-
-    public void setMODIFIED_DATE(Long MODIFIED_DATE) {
-        this.MODIFIED_DATE = MODIFIED_DATE;
-    }
+    private String AVATAR_URL;
 }

@@ -63,6 +63,7 @@ public class AuthorizeController {
             user.setBIO(githubUserDTO.getBio());
             user.setCREATE_DATE(System.currentTimeMillis());
             user.setMODIFIED_DATE(user.getCREATE_DATE());
+            user.setAVATAR_URL(githubUserDTO.getAvatar_url());
             //将所有的信息存入数据库，为持久化提供数据支撑
             userMapper.insert(user);
             //将token信息写入cookie，然后重定向到首页，首页有相应的逻辑判断

@@ -1,5 +1,6 @@
 package com.zhangxing.springbootforum.controller;
 
+import com.zhangxing.springbootforum.dto.PageDTO;
 import com.zhangxing.springbootforum.dto.QuestionDTO;
 import com.zhangxing.springbootforum.mapper.QuestionMapper;
 import com.zhangxing.springbootforum.mapper.UserMapper;
@@ -32,7 +33,10 @@ public class GreetingController {
 
     @GetMapping("/")
     public String greeting(HttpServletRequest request,
-                           Model model) {
+                           Model model,
+                           @RequestParam(name = "page", defaultValue = "1") Integer page,
+                           @RequestParam(name = "size", defaultValue = "2") Integer size
+                           ) {
         //此时使用request调用之前response设置的cookies（自己定义+系统默认）
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length != 0) {
@@ -50,9 +54,8 @@ public class GreetingController {
             }
         }
         //查询数据，放入页面
-        List<QuestionDTO> questionList = questionService.queryAllList();
-        model.addAttribute("allQuestions",questionList);
-        System.out.println(questionList);
+        PageDTO pagination = questionService.queryAllList(page, size);
+        model.addAttribute("pagination", pagination);
         return "index";
     }
 }

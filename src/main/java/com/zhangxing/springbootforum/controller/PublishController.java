@@ -1,7 +1,6 @@
 package com.zhangxing.springbootforum.controller;
 
 import com.zhangxing.springbootforum.mapper.QuestionMapper;
-import com.zhangxing.springbootforum.mapper.UserMapper;
 import com.zhangxing.springbootforum.model.Question;
 import com.zhangxing.springbootforum.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -21,9 +19,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class PublishController {
-
-    @Autowired
-    UserMapper userMapper;
 
     @Autowired
     QuestionMapper questionMapper;
@@ -55,27 +50,11 @@ public class PublishController {
             model.addAttribute("userError", "标签不能为空");
             return "publish";
         }
-        User user = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null && cookies.length != 0) {
-            for (Cookie cookie : cookies) {
-                //在获取到定义的名为"token"的cookie时，去数据库中查找这个user对象，
-                // index中也可以在有user时渲染出效果
-                if (cookie.getName().equals("token")) {
-                    String cookieValue = cookie.getValue();
-                    user= userMapper.findByToken(cookieValue);
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);
-                    }
-                    break;
-                }
-            }
-        }
+        User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             model.addAttribute("userError", "用户未登录");
             return "publish";
         }
-
         Question question = new Question();
         question.setTITLE(titleInput);
         question.setDESCRIPTION(descriptionInput);

@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.net.CookieStore;
 
 /**
  * @author zhangxing
@@ -25,9 +22,6 @@ import java.net.CookieStore;
 public class ProfileController {
 
     @Autowired
-    UserMapper userMapper;
-
-    @Autowired
     QuestionService questionService;
 
     @GetMapping("/profile/{action}")
@@ -36,22 +30,7 @@ public class ProfileController {
                           @RequestParam(name = "page", defaultValue = "1") Integer page,
                           @RequestParam(name = "size", defaultValue = "2") Integer size
     ) {
-        Cookie[] cookies = request.getCookies();
-        User user = null;
-        if (cookies != null && cookies.length != 0) {
-            for (Cookie cookie : cookies) {
-                //在获取到定义的名为"token"的cookie时，去数据库中查找这个user对象，
-                // index中也可以在有user时渲染出效果
-                if (cookie.getName().equals("token")) {
-                    String cookieValue = cookie.getValue();
-                    user = userMapper.findByToken(cookieValue);
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);
-                    }
-                    break;
-                }
-            }
-        }
+        User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return "redirect:/";
         }

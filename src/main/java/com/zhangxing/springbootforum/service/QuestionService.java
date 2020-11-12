@@ -98,8 +98,6 @@ public class QuestionService {
             questionDTOList.add(questionDTO);
         }
         pageDTO.setQuestions(questionDTOList);
-
-
         return pageDTO;
     }
 }

@@ -7,7 +7,7 @@
     <!--    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>-->
     <!--    <script src="js/bootstrap.min.js" type="application/javascript"/>-->
 
-    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
@@ -28,46 +28,9 @@
 
 <body>
 <!--导航条-->
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">发布-星辰大海</span>
-                <span class="icon-bar">1</span>
-                <span class="icon-bar">2</span>
-                <span class="icon-bar">3</span>
-            </button>
-            <a class="navbar-brand" href="/">星辰大海</a>
-        </div>
+<div th:insert="~{navigation :: copy_navigation}"></div>
+<!--导航条-->
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="搜索话题">
-                </div>
-                <button type="submit" class="btn btn-default">搜索</button>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li th:if="${session.user != null}">
-                    <a href="/publish">发布</a>
-                </li>
-                <li class="dropdown" th:if="${session.user != null}">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false" th:text="${session.user.getLOGIN_ID()}">我<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">消息中心</a></li>
-                        <li><a href="#">个人资料</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">退出登录</a></li>
-                    </ul>
-                </li>
-                <li th:unless="${session.user != null}"><a href="https://github.com/login/oauth/authorize?client_id=c8306afca84f0e373b8f
-                &redirect_uri=http://localhost:8080/callbackAuth&scope=user&state=1">登录</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
 <!--流式布局-->
 <div class="container-fluid main">
     <div class="row">
@@ -101,7 +64,7 @@
     </div>
 </div>
 <!--流式布局-->
-<!--导航条-->
+
 
 </body>
 </html>

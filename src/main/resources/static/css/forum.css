@@ -7,6 +7,10 @@ body{
     margin: 35px;
 }
 
+.profile_section{
+    margin-top: 20px;
+}
+
 .btn-publish{
     float: right;
     margin-bottom: 15px;

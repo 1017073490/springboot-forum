@@ -2,6 +2,8 @@ package com.zhangxing.springbootforum.service;
 
 import com.zhangxing.springbootforum.dto.PageDTO;
 import com.zhangxing.springbootforum.dto.QuestionDTO;
+import com.zhangxing.springbootforum.exception.CustomizerErrorCode;
+import com.zhangxing.springbootforum.exception.CustomizerException;
 import com.zhangxing.springbootforum.mapper.QuestionMapper;
 import com.zhangxing.springbootforum.mapper.UserMapper;
 import com.zhangxing.springbootforum.model.Question;
@@ -106,6 +108,9 @@ public class QuestionService {
 
     public QuestionDTO getByID(Integer id) {
         Question question = questionMapper.getByID(id);
+        if (question==null){
+            throw new CustomizerException(CustomizerErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
         User user = userMapper.findByID(question.getCREATOR_ID());
@@ -121,6 +126,9 @@ public class QuestionService {
         }else {
             //不是第一次创建问题，更新
             question.setMODIFIED_DATE(System.currentTimeMillis());
+            question.setTITLE(question.getTITLE());
+            question.setDESCRIPTION(question.getDESCRIPTION());
+            question.setTAGS(question.getTAGS());
             questionMapper.updateQuestion(question);
         }
     }

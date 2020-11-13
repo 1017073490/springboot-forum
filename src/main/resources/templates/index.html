@@ -23,7 +23,7 @@
             crossorigin="anonymous"></script>
 
     <!--自己的样式-->
-    <link rel="stylesheet" href="css/forum.css">
+    <link rel="stylesheet" href="/css/forum.css">
 </head>
 <body>
 
@@ -40,11 +40,14 @@
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object img-rounded"
-                             th:src="${question.getUser().getAVATAR_URL()}">
+                             th:src="${question.getUser().getAVATAR_URL()}"
+                             src="https://avatars3.githubusercontent.com/u/38576550?v=4">
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.getTITLE()}"></h4>
+                    <h4 class="media-heading">
+                        <a th:href="@{'question/'+${question.getID()}}" th:text="${question.getTITLE()}"></a>
+                    </h4>
                     <span th:text="${question.getDESCRIPTION()}"></span> <br>
                     <span class="text-desc">
                         • <span th:text="${question.getCOMMENT_COUNT()}"></span> 个评论

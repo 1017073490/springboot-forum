@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${question.TITLE}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!--    <link rel="stylesheet" href="css/bootstrap.min.css"/>-->
+    <!--    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>-->
+    <!--    <script src="js/bootstrap.min.js" type="application/javascript"/>-->
+
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <!--自己的样式-->
+    <link rel="stylesheet" href="/css/forum.css">
+</head>
+<body>
+
+<!--导航条-->
+<!--导航条-->
+<div th:insert="~{navigation :: copy_navigation}"></div>
+<!--流式布局-->
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h3><span th:text="${question.TITLE}"></span></h3>
+            | 作者：<span th:text="${question.getUser().getLOGIN_ID()}"></span>
+            | 发布时间：<span th:text="${#calendars.format(question.getCREATE_DATE(),'yyyy--MM--dd HH:mm')}"></span>
+            | 阅读数：<span th:text="${question.getVIEW_COUNT()}"></span>
+            <hr>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${question.getDESCRIPTION()}"></div>
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <a th:href="@{'/publish/'+${question.getID()}}" class="menu-minor-icon"
+               th:if="${session.user!=null && session.user.getID()==question.getCREATOR_ID()}">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                编辑
+            </a>
+
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h2>发起人</h2>
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-circle"
+                                 th:src="${question.getUser().getAVATAR_URL()}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <span th:href="@{'question/'+${question.getID()}}"
+                               th:text="${question.getUser().getLOGIN_ID()}"></span>
+                        </h4>
+                    </span>
+                    </div>
+                </div>
+                <hr>
+
+
+                <h2>相关问题</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!--流式布局-->
+
+</body>
+</html>

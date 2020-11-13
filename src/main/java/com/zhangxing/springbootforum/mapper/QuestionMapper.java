@@ -1,5 +1,6 @@
 package com.zhangxing.springbootforum.mapper;
 
+import com.zhangxing.springbootforum.dto.QuestionDTO;
 import com.zhangxing.springbootforum.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,4 +30,7 @@ public interface QuestionMapper {
 
     @Select("SELECT COUNT(1) FROM question WHERE CREATOR_ID=#{userID}")
     Integer countByUserID(@Param(value = "userID") Integer userID);
+
+    @Select("SELECT * FROM question WHERE ID=#{id}")
+    Question getByID(@Param(value = "id") Integer id);
 }

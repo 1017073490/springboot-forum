@@ -2,9 +2,9 @@ package com.zhangxing.springbootforum.controller;
 
 import com.zhangxing.springbootforum.dto.AccessTokenDTO;
 import com.zhangxing.springbootforum.dto.GithubUserDTO;
-import com.zhangxing.springbootforum.mapper.UserMapper;
 import com.zhangxing.springbootforum.model.User;
 import com.zhangxing.springbootforum.provider.GithubProvider;
+import com.zhangxing.springbootforum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ import java.util.UUID;
 public class AuthorizeController {
 
     @Autowired
-    UserMapper userMapper;
+    UserService userService;
 
     @Autowired
     GithubProvider githubProvider;
@@ -54,18 +55,17 @@ public class AuthorizeController {
         //getGithubUser调用需要传入token的链接（GitHub提供）来返回用户信息
         GithubUserDTO githubUserDTO = githubProvider.getGithubUser(accessToken);
         if (githubUserDTO != null) {
-            //登录成功，user的信息都获取到了，进行设置
+            //登录成功，user的信息都获取到了，进行设置。
+            //在创建新用户之前应该查询数据库有无该用户
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setTOKEN(token);
             user.setLOGIN_ID(githubUserDTO.getLogin());
             user.setACCOUNT_ID(githubUserDTO.getId());
             user.setBIO(githubUserDTO.getBio());
-            user.setCREATE_DATE(System.currentTimeMillis());
-            user.setMODIFIED_DATE(user.getCREATE_DATE());
             user.setAVATAR_URL(githubUserDTO.getAvatar_url());
+            userService.createOrUpdate(user);
             //将所有的信息存入数据库，为持久化提供数据支撑
-            userMapper.insert(user);
             //将token信息写入cookie，然后重定向到首页，首页有相应的逻辑判断
             response.addCookie(new Cookie("token", token));
             return "redirect:/";
@@ -73,6 +73,18 @@ public class AuthorizeController {
             //登录失败
             return "redirect:/";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response){
+        //首先清楚session、cookie
+        request.getSession().removeAttribute("user");
+        //设置同名并进行设置即可删除cookie
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 
 }

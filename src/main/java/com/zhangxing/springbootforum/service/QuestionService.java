@@ -38,6 +38,9 @@ public class QuestionService {
         } else {
             totalPage = totalCount / size + 1;
         }
+        if (totalPage <= 1) {
+            totalPage = 1;
+        }
         if (page < 1) {
             page = 1;
         }
@@ -99,5 +102,14 @@ public class QuestionService {
         }
         pageDTO.setQuestions(questionDTOList);
         return pageDTO;
+    }
+
+    public QuestionDTO getByID(Integer id) {
+        Question question = questionMapper.getByID(id);
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question, questionDTO);
+        User user = userMapper.findByID(question.getCREATOR_ID());
+        questionDTO.setUser(user);
+        return questionDTO;
     }
 }

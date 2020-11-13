@@ -112,4 +112,16 @@ public class QuestionService {
         questionDTO.setUser(user);
         return questionDTO;
     }
+
+    public void createOrUpdate(Question question) {
+        if (question.getID()==null){
+            question.setCREATE_DATE(System.currentTimeMillis());
+            question.setMODIFIED_DATE(question.getCREATE_DATE());
+            questionMapper.createQuestion(question);
+        }else {
+            //不是第一次创建问题，更新
+            question.setMODIFIED_DATE(System.currentTimeMillis());
+            questionMapper.updateQuestion(question);
+        }
+    }
 }

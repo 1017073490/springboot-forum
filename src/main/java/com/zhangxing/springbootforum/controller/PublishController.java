@@ -1,12 +1,14 @@
 package com.zhangxing.springbootforum.controller;
 
-import com.zhangxing.springbootforum.mapper.QuestionMapper;
+import com.zhangxing.springbootforum.dto.QuestionDTO;
 import com.zhangxing.springbootforum.model.Question;
 import com.zhangxing.springbootforum.model.User;
+import com.zhangxing.springbootforum.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 public class PublishController {
 
     @Autowired
-    QuestionMapper questionMapper;
+    QuestionService questionService;
 
     @GetMapping("/publish")
     public String publish() {
@@ -30,9 +32,10 @@ public class PublishController {
 
     @PostMapping("/publish")
     public String doPublish(
-            @RequestParam("titleInput") String titleInput,
-            @RequestParam("descriptionInput") String descriptionInput,
-            @RequestParam("tagInput") String tagInput,
+            @RequestParam(value = "titleInput",required = false) String titleInput,
+            @RequestParam(value = "descriptionInput",required = false) String descriptionInput,
+            @RequestParam(value = "tagInput",required = false) String tagInput,
+            @RequestParam(value = "questionID",required = false) Integer questionID,
             HttpServletRequest request, Model model
     ) {
         model.addAttribute("titleInput", titleInput);
@@ -56,14 +59,25 @@ public class PublishController {
             return "publish";
         }
         Question question = new Question();
+        question.setID(questionID);
         question.setTITLE(titleInput);
         question.setDESCRIPTION(descriptionInput);
         question.setTAGS(tagInput);
         question.setCREATOR_ID(user.getID());
-        question.setCREATE_DATE(System.currentTimeMillis());
-        question.setMODIFIED_DATE(question.getCREATE_DATE());
-        questionMapper.createQuestion(question);
+        questionService.createOrUpdate(question);
         return "redirect:/";
+    }
+
+    @GetMapping("/publish/{id}")
+    public String rePublish(@PathVariable(name = "id") Integer questionID,
+                            Model model) {
+        //只是简单的回显
+        QuestionDTO question = questionService.getByID(questionID);
+        model.addAttribute("titleInput", question.getTITLE());
+        model.addAttribute("descriptionInput", question.getDESCRIPTION());
+        model.addAttribute("tagInput", question.getTAGS());
+        model.addAttribute("questionID", question.getID());
+        return "publish";
     }
 
 }

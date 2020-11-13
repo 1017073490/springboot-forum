@@ -23,7 +23,7 @@
             crossorigin="anonymous"></script>
 
     <!--自己的样式-->
-    <link rel="stylesheet" href="css/forum.css">
+    <link rel="stylesheet" href="/css/forum.css">
 </head>
 
 <body>
@@ -38,6 +38,7 @@
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发起</h2>
             <hr>
             <form action="/publish" method="post">
+                <input type="hidden" name="questionID" th:value="${questionID}">
                 <div class="form-group">
                     <label for="titleInput">问题标题（简单扼要）</label>
                     <input th:value="${titleInput}" type="text" name="titleInput" class="form-control" id="titleInput" placeholder="问题标题...">

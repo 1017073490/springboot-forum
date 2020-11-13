@@ -2,10 +2,7 @@ package com.zhangxing.springbootforum.mapper;
 
 import com.zhangxing.springbootforum.dto.QuestionDTO;
 import com.zhangxing.springbootforum.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -33,4 +30,8 @@ public interface QuestionMapper {
 
     @Select("SELECT * FROM question WHERE ID=#{id}")
     Question getByID(@Param(value = "id") Integer id);
+
+    @Update("UPDATE question SET TITLE=#{TITLE}, DESCRIPTION=#{DESCRIPTION}," +
+            " MODIFIED_DATE=#{MODIFIED_DATE}, TAGS=#{TAGS} WHERE ID=#{ID}")
+    void updateQuestion(Question question);
 }

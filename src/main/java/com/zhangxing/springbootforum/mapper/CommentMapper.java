@@ -1,13 +1,13 @@
 package com.zhangxing.springbootforum.mapper;
 
-import com.zhangxing.springbootforum.dto.QuestionDTO;
+import com.zhangxing.springbootforum.model.Comment;
 import com.zhangxing.springbootforum.model.Question;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
-public interface QuestionMapper {
+public interface CommentMapper {
 
     @Insert("INSERT INTO question (TITLE,DESCRIPTION,CREATE_DATE,MODIFIED_DATE,CREATOR_ID,TAGS)" +
             " VALUES (#{TITLE},#{DESCRIPTION},#{CREATE_DATE},#{MODIFIED_DATE},#{CREATOR_ID},#{TAGS})")
@@ -39,5 +39,10 @@ public interface QuestionMapper {
     void updateQuestionView(@Param(value = "VIEW_COUNT") int view_count,
                             @Param(value = "ID") int ID);
 
-    Question selectByParentID(Long parent_id);
+    @Insert("INSERT INTO comment (PARENT_ID,TYPE,COMMENTATOR_ID,CREATE_DATE,MODIFIED_DATE,CONTENT)" +
+            " VALUES (#{PARENT_ID},#{TYPE},#{COMMENTATOR_ID},#{CREATE_DATE},#{MODIFIED_DATE},#{CONTENT})")
+    void insert(Comment comment);
+
+    Comment selectByParentID(Long parent_id);
+
 }

@@ -42,7 +42,8 @@ public class AuthorizeController {
     @GetMapping("/callbackAuth")
     public String githubCallback(@RequestParam(name = "code") String code,
                                  @RequestParam(name = "state") String state,
-                                 HttpServletResponse response) {
+                                 HttpServletResponse response,
+                                 HttpServletRequest request) {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         //将回调的参数定义进去
         accessTokenDTO.setClient_id(clientId);
@@ -52,6 +53,7 @@ public class AuthorizeController {
         accessTokenDTO.setRedirect_uri(clientRedirect_uri);
         //getGithubUser调用获取token方法来获得token（这个token是经过处理的真正的token值）
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
+        System.out.println(accessToken);
         //getGithubUser调用需要传入token的链接（GitHub提供）来返回用户信息
         GithubUserDTO githubUserDTO = githubProvider.getGithubUser(accessToken);
         if (githubUserDTO != null) {
@@ -65,6 +67,7 @@ public class AuthorizeController {
             user.setBIO(githubUserDTO.getBio());
             user.setAVATAR_URL(githubUserDTO.getAvatar_url());
             userService.createOrUpdate(user);
+//            request.getSession().setAttribute("user", user);
             //将所有的信息存入数据库，为持久化提供数据支撑
             //将token信息写入cookie，然后重定向到首页，首页有相应的逻辑判断
             response.addCookie(new Cookie("token", token));
@@ -77,7 +80,7 @@ public class AuthorizeController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request,
-                         HttpServletResponse response){
+                         HttpServletResponse response) {
         //首先清楚session、cookie
         request.getSession().removeAttribute("user");
         //设置同名并进行设置即可删除cookie

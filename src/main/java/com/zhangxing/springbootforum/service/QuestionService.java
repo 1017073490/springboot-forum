@@ -108,7 +108,7 @@ public class QuestionService {
 
     public QuestionDTO getByID(Integer id) {
         Question question = questionMapper.getByID(id);
-        if (question==null){
+        if (question == null) {
             throw new CustomizerException(CustomizerErrorCode.QUESTION_NOT_FOUND);
         }
         QuestionDTO questionDTO = new QuestionDTO();
@@ -119,11 +119,11 @@ public class QuestionService {
     }
 
     public void createOrUpdate(Question question) {
-        if (question.getID()==null){
+        if (question.getID() == null) {
             question.setCREATE_DATE(System.currentTimeMillis());
             question.setMODIFIED_DATE(question.getCREATE_DATE());
             questionMapper.createQuestion(question);
-        }else {
+        } else {
             //不是第一次创建问题，更新
             question.setMODIFIED_DATE(System.currentTimeMillis());
             question.setTITLE(question.getTITLE());
@@ -131,5 +131,11 @@ public class QuestionService {
             question.setTAGS(question.getTAGS());
             questionMapper.updateQuestion(question);
         }
+    }
+
+    public void addView(Integer id) {
+        Question question = questionMapper.getByID(id);
+        Integer view_count = question.getVIEW_COUNT() + 1;
+        questionMapper.updateQuestionView(view_count, question.getID());
     }
 }
